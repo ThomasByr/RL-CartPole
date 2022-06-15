@@ -24,7 +24,7 @@ This script is suppose to run on `python>=3.10.4`.
 Run and train the simulation with :
 
 ```ps1
-python ./main.py
+python .\main.py
 ```
 
 If the model is not trained, the program will launch a training session. Otherwise (if there is a model to load in the [models folder](models/)), the weights of the previously trained model will be loaded and a gif image will be created.
