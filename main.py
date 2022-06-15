@@ -33,6 +33,7 @@
 #! POSSIBILITY OF SUCH DAMAGE.
 #!
 
-from core import *
+from core import main
 
-main()
+if __name__ == "__main__":
+    main()
