@@ -27,15 +27,15 @@ Run and train the simulation with :
 python ./main.py
 ```
 
-If the model is not trained, the program with launch a training session. Otherwise (if there is a model to load in the [models folder](models/)), the weights of the previously trained model will be loaded and a gif image will be created.
+If the model is not trained, the program will launch a training session. Otherwise (if there is a model to load in the [models folder](models/)), the weights of the previously trained model will be loaded and a gif image will be created.
 
-To force the training, please type :
+To force the training, please type the following and the re-run the script :
 
 ```ps1
 rm -r -Force models/*
 ```
 
-Please note that the training could take up to 5 minutes depending on your hardware.
+Please note that the training could take up to 5 minutes depending on your hardware and / or the specified goals of the model.
 
 ## ⚖️ License
 
