@@ -4,5 +4,6 @@ gym
 pygame
 pyglet
 PyOpenGL
+pillow
 tqdm
 h5py
