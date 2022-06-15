@@ -1,0 +1,8 @@
+numpy
+tensorflow
+gym
+pygame
+pyglet
+PyOpenGL
+tqdm
+h5py
