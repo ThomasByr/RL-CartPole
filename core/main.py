@@ -272,6 +272,9 @@ def export(model: tf.keras.Model):
 
 
 def main():
+    """
+    Main entry point for the program.
+    """
     # Set seed for experiment reproducibility
     seed = 42
     env.reset(seed=seed)
