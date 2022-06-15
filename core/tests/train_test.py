@@ -1,6 +1,6 @@
 from termcolor import colored
 
-from ..main import *
+from ..main import ActorCritic, train, env
 
 
 def test_train():
