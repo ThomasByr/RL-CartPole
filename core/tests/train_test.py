@@ -1,8 +1,10 @@
+import pytest
 from termcolor import colored
 
 from ..main import ActorCritic, train, env
 
 
+@pytest.mark.filterwarnings("ignore:.*:DeprecationWarning")
 def test_train():
     num_actions = env.action_space.n  # 2
 
