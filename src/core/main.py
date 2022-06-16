@@ -17,6 +17,7 @@ def get_help() -> None:  # pragma: no cover
     info("  -h, --help      Show this help message and exit.")
     info("  -v, --version   Show version and exit.")
     info("  --config=<cfg>  Set the CartPole configuration version (default: %s).", Config.cv0)
+    info("                  Available versions from \"cv0\" or \"cv1\".")
 
 
 def get_version() -> None:  # pragma: no cover
