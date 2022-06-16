@@ -191,6 +191,7 @@ def load_weights(model: tf.keras.Model) -> bool:
     loaded = False
 
     # try to load the model
+    print(colored(f"Trying to load {cfg.to_str()} model weights", "blue"))
     try:
         model.load_weights(model_path)
         loaded = True
@@ -266,7 +267,7 @@ def export(model: tf.keras.Model):
     # loop=0: loop forever, duration=1: play each frame for 1ms
     images[0].save(fp=image_file, save_all=True, append_images=images[1:], loop=0, duration=1)
 
-    print(colored(f"Saved GIF to {image_file}", "green"))
+    print(colored(f"Saved GIF", "green"))
 
 
 #%% entry point
