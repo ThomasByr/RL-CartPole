@@ -65,6 +65,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 - deprecated packages in imported libs : to be removed in python 3.12 and pillow 10
 - cudart64_110.dll not found
+- tensorflow warnings about deleted checkpoint with unrestored values
 
 **todo** (first implementation version)
 
