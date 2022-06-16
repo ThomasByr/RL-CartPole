@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#! CartPole-v0
+#! RL CartPole using Actor-Critic
 #!
 #! Copyright (c) 2022, ThomasByr.
 #! All rights reserved.
