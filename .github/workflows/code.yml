@@ -36,4 +36,4 @@ jobs:
       - name: Test with pytest
         run: |
           rm -r -Force models/*
-          pytest core/tests/
+          pytest src/tests/
