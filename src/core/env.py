@@ -238,11 +238,11 @@ class Env:
         loaded = False
 
         # try to load the model
-        info(f"Trying to load {self.cfg.to_str()} model weights")
+        debug(f"Trying to load {self.cfg.to_str()} model weights")
         try:
             model.load_weights(self.model_path)
             loaded = True
-            debug("Loaded model from disk")
+            info("Loaded model from disk")
         except Exception as e:
             if isinstance(e, tf.errors.NotFoundError):
                 error("Could not find model weights on disk")
