@@ -47,7 +47,7 @@ To force the training, please type the following and the re-run the script :
 rm -r -Force models/*
 ```
 
-Please note that the training could take up to 5 minutes depending on your hardware and / or the specified goals of the model.
+Please note that the training could take up to 5 minutes depending on your hardware and / or the specified goals of the model. Please type `python .\main --help` to view the launching available options.
 
 ## ⚖️ License
 
