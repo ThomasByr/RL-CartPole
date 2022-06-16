@@ -21,7 +21,7 @@ config: dict[str, Config] = {
     "1": Config.cv1,
 }
 
-pygame.init()
+# pygame.init()
 
 
 class Env:
