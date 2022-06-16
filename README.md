@@ -1,7 +1,5 @@
 # Playing CartPole with the Actor-Critic Method
 
-<!-- [![Linux](https://svgshare.com/i/Zhy.svg)](https://docs.microsoft.com/en-us/windows/wsl/tutorials/gui-apps) -->
-
 [![Windows](https://svgshare.com/i/ZhY.svg)](https://svgshare.com/i/ZhY.svg)
 [![GitHub license](https://img.shields.io/github/license/ThomasByr/RL-CartPole)](https://github.com/ThomasByr/RL-CartPole/blob/master/LICENSE)
 [![GitHub commits](https://badgen.net/github/commits/ThomasByr/RL-CartPole)](https://GitHub.com/ThomasByr/RL-CartPole/commit/)
@@ -14,7 +12,7 @@
 
 ![cartpole simulation gif](out/cartpole-v1.gif)
 
-In the [CartPole-v0 environment](https://www.gymlibrary.ml/environments/classic_control/cart_pole/), a pole is attached to a cart moving along a frictionless track. The pole starts upright and the goal of the agent is to prevent it from falling over by applying a force of -1 or +1 to the cart. A reward of +1 is given for every time step the pole remains upright. An episode ends when (1) the pole is more than 15 degrees from vertical or (2) the cart moves more than 2.4 units from the center.
+In the [CartPole environment](https://www.gymlibrary.ml/environments/classic_control/cart_pole/), a pole is attached to a cart moving along a frictionless track. The pole starts upright and the goal of the agent is to prevent it from falling over by applying a force of -1 or +1 to the cart. A reward of +1 is given for every time step the pole remains upright. An episode ends when (1) the pole is more than 15 degrees from vertical or (2) the cart moves more than 2.4 units from the center.
 
 1. [✏️ Setup](#️-setup)
 2. [🧪 Testing](#-testing)
