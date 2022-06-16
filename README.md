@@ -12,7 +12,7 @@
 [![GitHub version](https://badge.fury.io/gh/ThomasByr%2FRL-CartPole.svg)](https://github.com/ThomasByr/RL-CartPole)
 [![Author](https://img.shields.io/badge/author-@ThomasByr-blue)](https://github.com/ThomasByr)
 
-![cartpole simulation gif](cartpole-v0.gif)
+![cartpole simulation gif](cartpole-v1.gif)
 
 In the [CartPole-v0 environment](https://www.gymlibrary.ml/environments/classic_control/cart_pole/), a pole is attached to a cart moving along a frictionless track. The pole starts upright and the goal of the agent is to prevent it from falling over by applying a force of -1 or +1 to the cart. A reward of +1 is given for every time step the pole remains upright. An episode ends when (1) the pole is more than 15 degrees from vertical or (2) the cart moves more than 2.4 units from the center.
 
@@ -68,5 +68,5 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 **todo** (first implementation version)
 
-- [ ] CartPole-v0 -> CartPole-v1
+- [x] CartPole-v0 -> CartPole-v1 : kept both (v1.1.0)
 - [ ] unable to find and utilize gpu
