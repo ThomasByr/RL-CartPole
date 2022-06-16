@@ -1,7 +1,8 @@
 import gym
 from enum import Enum
+from termcolor import colored
 
-__all__ = ["Config"]
+__all__ = ["Config", "info", "debug", "warn", "error", "fatal"]
 
 
 class Config(Enum):
@@ -24,3 +25,29 @@ class Config(Enum):
             self.cv0: 195,
             self.cv1: 475,
         }[self]
+
+
+def info(msg: str, *args: object) -> None:
+    """Print the message to stdout."""
+    print(colored(msg % args, "blue"))
+
+
+def debug(msg: str, *args: object) -> None:
+    """Print the message to stdout."""
+    print(colored(msg % args, "cyan"))
+
+
+def warn(msg: str, *args: object) -> None:
+    """Print the message to stdout."""
+    print(colored(msg % args, "yellow"))
+
+
+def error(msg: str, *args: object) -> None:
+    """Print the message to stdout."""
+    print(colored(msg % args, "red"))
+
+
+def fatal(msg: str, *args: object) -> None:
+    """Print the message to stdout."""
+    print(colored(msg % args, "red"))
+    exit(1)
