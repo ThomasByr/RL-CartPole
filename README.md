@@ -7,6 +7,7 @@
 [![Maintenance](https://img.shields.io/badge/maintained%3F-yes-green.svg)](https://GitHub.com/ThomasByr/RL-CartPole/graphs/commit-activity)
 
 [![Python application](https://github.com/ThomasByr/RL-CartPole/actions/workflows/code.yml/badge.svg)](https://github.com/ThomasByr/RL-CartPole/actions/workflows/code.yml)
+[![Pylint](https://github.com/ThomasByr/RL-CartPole/actions/workflows/pylint.yml/badge.svg)](https://github.com/ThomasByr/RL-CartPole/actions/workflows/pylint.yml)
 [![GitHub version](https://badge.fury.io/gh/ThomasByr%2FRL-CartPole.svg)](https://github.com/ThomasByr/RL-CartPole)
 [![Author](https://img.shields.io/badge/author-@ThomasByr-blue)](https://github.com/ThomasByr)
 
