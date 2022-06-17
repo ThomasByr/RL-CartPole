@@ -333,8 +333,8 @@ class Env:
         # Save GIF image
         images = self.render_episode(self.env, model, self.max_steps_per_episode)
         image_file = f"out/{self.cfg.to_str()}.gif"
-        # loop=0: loop forever, duration=1: play each frame for 1ms
-        images[0].save(fp=image_file, save_all=True, append_images=images[1:], loop=0, duration=1)
+        # loop=0: loop forever, duration=x: play each frame for x ms
+        images[0].save(fp=image_file, save_all=True, append_images=images[1:], loop=0, duration=0.2)
 
         info("Saved GIF")
 
@@ -358,7 +358,7 @@ class Env:
         direction = ({0} | {1}).pop()  # do not make assumptions about the initial direction
         window = pygame.display.set_mode((WIDTH, HEIGHT))
         font = pygame.font.SysFont("Arial", 15)
-        pygame.display.set_caption("CartPole")
+        pygame.display.set_caption(self.cfg.get_name())
 
         state = tf.constant(self.env.reset(), dtype=tf.float32)
         clock = pygame.time.Clock()
