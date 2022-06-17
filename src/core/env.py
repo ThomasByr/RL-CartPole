@@ -21,7 +21,7 @@ config: dict[str, Config] = {
     "1": Config.cv1,
 }
 
-WIDTH, HEIGHT = 600, 400
+WIDTH, HEIGHT = 600, 400  # screen size based on CartPole
 
 
 class Env:
@@ -303,7 +303,7 @@ class Env:
 
         return images
 
-    def export(self, model: tf.keras.Model) -> None:
+    def render_gif(self, model: tf.keras.Model) -> None:
         # Save GIF image
         images = self.render_episode(self.env, model, self.max_steps_per_episode)
         image_file = f"out/{self.cfg.to_str()}.gif"
@@ -318,7 +318,7 @@ class Env:
         debug("Running interactive mode...")
 
         all_actions = list(range(self.env.action_space.n))  # 0 for left, 1 for right
-        is_running, should_tilt, tilt, released = True, False, False, False
+        is_running, should_tilt, tilt, released = True, False, False, True
         tilt_fc, tilt_fc_max, dir = 0, 4, 0
         window = pygame.display.set_mode((WIDTH, HEIGHT))
         font = pygame.font.SysFont("Arial", 15)
@@ -369,15 +369,28 @@ class Env:
             state, _, _, _ = self.env.step(action)  # take action
             state = tf.constant(state, dtype=tf.float32)  # convert to tensor
 
-            self.env.render(mode="human")  # get screen
+            screen = self.env.render(mode="rgb_array")  # get screen
+            img_surface = pygame.image.frombuffer(screen, (WIDTH, HEIGHT), "RGB")  # convert to pygame surface
+            window.blit(img_surface, (0, 0))
 
             # Display frame rate and other info
             fps_text = f"fps: {fps:.0f}"
             info_text = "click the screen to tilt the cart"
+            lr_r_text = "right"
+            lr_s_text = "|"
+            lr_l_text = "left"
             fps_text_surface = font.render(fps_text, True, (0, 0, 0))
-            info_text_surface = font.render(info_text, True, (51, 255, 51) if tilt else (255, 51, 51))
+            info_text_surface = font.render(info_text, True, (0, 0, 0))
+            lr_r_surface = font.render(lr_r_text, True, (51, 255, 51) if tilt and dir == 1 else (255, 51, 51))
+            lr_s_surface = font.render(lr_s_text, True, (0, 0, 0))
+            lr_l_surface = font.render(lr_l_text, True, (51, 255, 51) if tilt and dir == 0 else (255, 51, 51))
             window.blit(fps_text_surface, (10, 10))
             window.blit(info_text_surface, (10, 30))
+
+            w = lr_l_surface.get_width() + 2
+            window.blit(lr_r_surface, (WIDTH/2 + 4, 10))
+            window.blit(lr_s_surface, (WIDTH / 2, 10))
+            window.blit(lr_l_surface, (WIDTH/2 - w, 10))
 
             pygame.display.flip()
 
@@ -395,5 +408,5 @@ class Env:
         model = ActorCritic(num_actions, num_hidden_units)
 
         self.train(model)
-        # self.export(model)
+        # self.render_gif(model)
         self.interactive_run(model)
