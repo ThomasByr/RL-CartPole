@@ -327,8 +327,16 @@ class Env:
         state = tf.constant(self.env.reset(), dtype=tf.float32)
         clock = pygame.time.Clock()
 
+        lr_l_text, lr_s_text, lr_r_text = "left", "|", "right"
+        lr_s_surface = font.render(lr_s_text, True, (0, 0, 0))
+        lr_l_surface = font.render(lr_l_text, True, (0, 0, 0))
+
+        w0 = lr_l_surface.get_width() + 2
+        w1 = lr_s_surface.get_width() + 2
+
         while is_running:
-            fps = clock.tick(60)  # limit to 60 FPS
+            clock.tick(60)  # limit to 60 FPS
+            fps = clock.get_fps()
 
             for event in pygame.event.get():
 
@@ -376,21 +384,17 @@ class Env:
             # Display frame rate and other info
             fps_text = f"fps: {fps:.0f}"
             info_text = "click the screen to tilt the cart"
-            lr_r_text = "right"
-            lr_s_text = "|"
-            lr_l_text = "left"
+
             fps_text_surface = font.render(fps_text, True, (0, 0, 0))
             info_text_surface = font.render(info_text, True, (0, 0, 0))
             lr_r_surface = font.render(lr_r_text, True, (51, 255, 51) if tilt and dir == 1 else (255, 51, 51))
-            lr_s_surface = font.render(lr_s_text, True, (0, 0, 0))
             lr_l_surface = font.render(lr_l_text, True, (51, 255, 51) if tilt and dir == 0 else (255, 51, 51))
             window.blit(fps_text_surface, (10, 10))
             window.blit(info_text_surface, (10, 30))
 
-            w = lr_l_surface.get_width() + 2
-            window.blit(lr_r_surface, (WIDTH/2 + 4, 10))
+            window.blit(lr_r_surface, (WIDTH/2 + w1, 10))
             window.blit(lr_s_surface, (WIDTH / 2, 10))
-            window.blit(lr_l_surface, (WIDTH/2 - w, 10))
+            window.blit(lr_l_surface, (WIDTH/2 - w0, 10))
 
             pygame.display.flip()
 
