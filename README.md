@@ -7,6 +7,7 @@
 [![Maintenance](https://img.shields.io/badge/maintained%3F-yes-green.svg)](https://GitHub.com/ThomasByr/RL-CartPole/graphs/commit-activity)
 
 [![Python application](https://github.com/ThomasByr/RL-CartPole/actions/workflows/code.yml/badge.svg)](https://github.com/ThomasByr/RL-CartPole/actions/workflows/code.yml)
+[![Pylint](https://github.com/ThomasByr/RL-CartPole/actions/workflows/pylint.yml/badge.svg)](https://github.com/ThomasByr/RL-CartPole/actions/workflows/pylint.yml)
 [![GitHub version](https://badge.fury.io/gh/ThomasByr%2FRL-CartPole.svg)](https://github.com/ThomasByr/RL-CartPole)
 [![Author](https://img.shields.io/badge/author-@ThomasByr-blue)](https://github.com/ThomasByr)
 
@@ -34,7 +35,7 @@ This script is suppose to run on `python>=3.10.4`.
 Run and train the simulation with (ignore tf warnings):
 
 ```ps1
-python .\main.py -c cv1 2> $null
+python .\main.py -c 1 2> $null
 ```
 
 If the model is not trained, the program will launch a training session. Otherwise (if there is a model to load in the [models folder](models/)), the weights of the previously trained model will be loaded. Then, either a gif image will be created or interractive mode will be entered depending on commented features.

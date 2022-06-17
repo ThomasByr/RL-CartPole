@@ -1,3 +1,7 @@
+"""
+Suit of simple unit tests to train the model.
+"""
+
 import pytest
 import tensorflow as tf
 import numpy as np
