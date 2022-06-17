@@ -29,6 +29,13 @@ class Config(Enum):
         """Convert the enum to a lowercased string."""
         return (_ := self.value.lower()).strip()
 
+    def get_name(self) -> str:
+        """Get the name of the environment."""
+        return {
+            self.cv0: "CartPole-v0",
+            self.cv1: "CartPole-v1",
+        }[self]
+
     def get_reward_threshold(self) -> int:
         """Get the reward threshold for the environment."""
         return {
