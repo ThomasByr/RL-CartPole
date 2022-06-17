@@ -37,7 +37,7 @@ Run and train the simulation with :
 python .\main.py
 ```
 
-If the model is not trained, the program will launch a training session. Otherwise (if there is a model to load in the [models folder](models/)), the weights of the previously trained model will be loaded and a gif image will be created.
+If the model is not trained, the program will launch a training session. Otherwise (if there is a model to load in the [models folder](models/)), the weights of the previously trained model will be loaded. Then, either a gif image will be created or interractive mode will be entered depending on commented features.
 
 To force the training, please type the following and the re-run the script :
 
