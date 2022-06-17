@@ -1,3 +1,7 @@
+"""
+Version information for the package.
+"""
+
 __title__ = "cartpole"
 __description__ = "A CartPole implementation in Python using reinforcement learning."
 __url__ = "https://github.com/ThomasByr/RL-CartPole"
