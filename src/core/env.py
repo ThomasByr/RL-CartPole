@@ -91,8 +91,8 @@ class Env:
 
         # Constants
         self.min_episodes_criterion = 1_000
-        self.max_episodes = 10_000
-        self.max_steps_per_episode = 1_000_000
+        self.max_episodes = 10_000  # should be large enough to ensure convergence
+        self.max_steps_per_episode = 500  # max of 100 for v0 and 500 for v1
 
         self.reward_threshold = self.cfg.get_reward_threshold()
         self.running_reward = 0
