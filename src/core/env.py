@@ -21,7 +21,7 @@ config: dict[str, Config] = {
     "1": Config.cv1,
 }
 
-# pygame.init()
+WIDTH, HEIGHT = 600, 400
 
 
 class Env:
@@ -279,7 +279,7 @@ class Env:
             model.save_weights(self.model_path)  # save the model
             info("Saved model to disk")
 
-    def render_episode(self, env: gym.Env, model: tf.keras.Model, max_steps: int):
+    def render_episode(self, env: gym.Env, model: tf.keras.Model, max_steps: int) -> List[Image.Image]:
         screen = env.render(mode="rgb_array")
         im = Image.fromarray(screen)
 
@@ -303,7 +303,7 @@ class Env:
 
         return images
 
-    def export(self, model: tf.keras.Model):
+    def export(self, model: tf.keras.Model) -> None:
         # Save GIF image
         images = self.render_episode(self.env, model, self.max_steps_per_episode)
         image_file = f"out/{self.cfg.to_str()}.gif"
@@ -313,13 +313,75 @@ class Env:
         info(f"Saved GIF")
 
     def interactive_run(self, model: tf.keras.Model):
-        is_running = True
-        window: pygame.Surface = pygame.display.set_mode((600, 400))
+        pygame.init()
+
+        debug("Running interactive mode...")
+
+        all_actions = list(range(self.env.action_space.n))  # 0 for left, 1 for right
+        is_running, should_tilt, tilt, released = True, False, False, False
+        tilt_fc, tilt_fc_max, dir = 0, 4, 0
+        window = pygame.display.set_mode((WIDTH, HEIGHT))
+        font = pygame.font.SysFont("Arial", 15)
         pygame.display.set_caption("CartPole")
 
-        raise NotImplementedError
+        state = tf.constant(self.env.reset(), dtype=tf.float32)
+        clock = pygame.time.Clock()
 
-    def run(self):
+        while is_running:
+            fps = clock.tick(60)  # limit to 60 FPS
+
+            for event in pygame.event.get():
+
+                # exit event
+                if event.type == pygame.QUIT:
+                    is_running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        is_running = False
+
+                # mouse events
+                elif event.type == pygame.MOUSEBUTTONDOWN and tilt_fc == 0 and released:
+                    should_tilt = True
+                    dir = 0 if pygame.mouse.get_pos()[0] < WIDTH / 2 else 1
+                    released = False
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    released = True
+
+            if should_tilt or tilt_fc > 0:
+                tilt_fc += 1
+
+            should_tilt = False
+
+            tilt = False
+            if 0 < tilt_fc <= tilt_fc_max:
+                tilt = True
+            elif tilt_fc > tilt_fc_max:
+                tilt_fc = 0
+
+            state = tf.expand_dims(state, 0)  # add batch dimension
+            action_probs, _ = model(state)  # get action probabilities
+
+            if tilt:
+                action = all_actions[dir]  # get user action
+            else:
+                action = np.argmax(np.squeeze(action_probs))  # get action
+
+            state, _, _, _ = self.env.step(action)  # take action
+            state = tf.constant(state, dtype=tf.float32)  # convert to tensor
+
+            self.env.render(mode="human")  # get screen
+
+            # Display frame rate and other info
+            fps_text = f"fps: {fps:.0f}"
+            info_text = "click the screen to tilt the cart"
+            fps_text_surface = font.render(fps_text, True, (0, 0, 0))
+            info_text_surface = font.render(info_text, True, (51, 255, 51) if tilt else (255, 51, 51))
+            window.blit(fps_text_surface, (10, 10))
+            window.blit(info_text_surface, (10, 30))
+
+            pygame.display.flip()
+
+    def run(self) -> None:
         # Set seed for experiment reproducibility
         seed = 42
         self.env.reset(seed=seed)
@@ -333,4 +395,5 @@ class Env:
         model = ActorCritic(num_actions, num_hidden_units)
 
         self.train(model)
-        self.export(model)
+        # self.export(model)
+        self.interactive_run(model)
