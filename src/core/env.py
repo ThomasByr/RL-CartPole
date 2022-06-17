@@ -319,7 +319,7 @@ class Env:
 
         all_actions = list(range(self.env.action_space.n))  # 0 for left, 1 for right
         is_running, should_tilt, tilt, released = True, False, False, True
-        tilt_fc, tilt_fc_max, dir = 0, 4, 0
+        tilt_fc, tilt_fc_max, dir = 0, 6, 0
         window = pygame.display.set_mode((WIDTH, HEIGHT))
         font = pygame.font.SysFont("Arial", 15)
         pygame.display.set_caption("CartPole")
