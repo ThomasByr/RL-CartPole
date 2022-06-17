@@ -312,7 +312,16 @@ class Env:
 
         info(f"Saved GIF")
 
-    def interactive_run(self, model: tf.keras.Model):
+    def interactive_run(self, model: tf.keras.Model) -> None:
+        """
+        Runs the model interactively.
+        
+        ## Parameters
+        ```python
+        model: tf.keras.Model
+            The model to run.
+        ```
+        """
         pygame.init()
 
         debug("Running interactive mode...")
