@@ -39,25 +39,25 @@ class Config(Enum):
 
 def info(msg: str, *args: object) -> None:
     """Print a message to stdout to the info level."""
-    print(colored(msg % args, "blue"))
+    print(colored("   INFO", "green"), msg.format(*args))
 
 
 def debug(msg: str, *args: object) -> None:
     """Print a message to stdout to the debug level."""
-    print(colored(msg % args, "cyan"))
+    print(colored("  DEBUG", "cyan"), msg.format(*args))
 
 
 def warn(msg: str, *args: object) -> None:
     """Print a message to stdout to the warn level."""
-    print(colored(msg % args, "yellow"))
+    print(colored("   WARN", "yellow"), msg.format(*args))
 
 
 def error(msg: str, *args: object) -> None:
     """Print a message to stdout to the error level."""
-    print(colored(msg % args, "red"))
+    print(colored("  ERROR", "red"), msg.format(*args))
 
 
 def fatal(msg: str, *args: object) -> NoReturn:
     """Print a message to stdout to the fatal level and exit."""
-    print(colored(msg % args, "red"))
+    print(colored("  FATAL", "red"), msg.format(*args))
     sys.exit(1)
