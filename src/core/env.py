@@ -1,3 +1,10 @@
+"""
+Environment
+
+User based environment to perform the CartPole task.
+"""
+#pylint: disable=[C0103, C0114, C0301, C0411, W0401, W0614, W0703, R0902, R0912, R0913, R0914, E1101]
+
 import collections
 import statistics
 import pygame
@@ -25,6 +32,9 @@ WIDTH, HEIGHT = 600, 400  # screen size based on CartPole
 
 
 class Env:
+    """
+    User Environment to perform the CartPole task.
+    """
 
     # Small epsilon value for stabilizing division operations
     eps = np.finfo(np.float32).eps.item()
@@ -109,33 +119,31 @@ class Env:
         return f"Env({self._cfg.to_str()})"
 
     @property
-    def cfg(self) -> Config:
+    def cfg(self) -> Config:  # pylint: disable=C0116
         return self._cfg
 
     @cfg.setter
-    def cfg(self, _: Config) -> None:  # pylint: disable=unused-argument
+    def cfg(self, _: Config) -> None:  # pylint: disable=C0116
         warn("Setting the environment configuration is not supported.")
-        return
 
     @property
-    def model_path(self) -> str:
+    def model_path(self) -> str:  # pylint: disable=C0116
         return self._model_path
 
     @model_path.setter
-    def model_path(self, _: str) -> None:  # pylint: disable=unused-argument
+    def model_path(self, _: str) -> None:  # pylint: disable=C0116
         warn("Setting the model path is not supported.")
-        return
 
     # Wrap OpenAI Gym"s `env.step` call as an operation in a TensorFlow function.
     # This would allow it to be included in a callable TensorFlow graph.
 
     def env_step(self, action: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Returns state, reward and done flag given an action."""
-
         state, reward, done, _ = self.env.step(action)
         return (state.astype(np.float32), np.array(reward, np.int32), np.array(done, np.int32))
 
     def tf_env_step(self, action: tf.Tensor) -> List[tf.Tensor]:
+        """Returns state, reward and done flag given an action."""
         return tf.numpy_function(self.env_step, [action], [tf.float32, tf.int32, tf.int32])
 
     def run_episode(self, initial_state: tf.Tensor, model: tf.keras.Model,
@@ -248,6 +256,7 @@ class Env:
         return episode_reward
 
     def load_weights(self, model: tf.keras.Model) -> bool:
+        """Try to load weights from the model path."""
         loaded = False
 
         # try to load the model
@@ -265,6 +274,7 @@ class Env:
         return loaded
 
     def train(self, model: tf.keras.Model):
+        """Trains the model."""
         loaded = self.load_weights(model)
 
         # Keep last episodes reward : `deque` is a double-ended queue
@@ -272,6 +282,7 @@ class Env:
 
         if not loaded:
             with tqdm.trange(self.max_episodes) as t:
+                i: int = -1
                 for i in t:  # for each episode
                     initial_state = tf.constant(self.env.reset(), dtype=tf.float32)  # get initial state
                     episode_reward = int(
@@ -287,12 +298,13 @@ class Env:
                     if running_reward > self.reward_threshold and i >= self.min_episodes_criterion:
                         break
 
-            debug(f"\nSolved at episode {i}: average reward: {running_reward:.2f}!")
+                debug(f"\nSolved at episode {i}: average reward: {running_reward:.2f}!")
 
             model.save_weights(self.model_path)  # save the model
             info("Saved model to disk")
 
     def render_episode(self, env: gym.Env, model: tf.keras.Model, max_steps: int) -> List[Image.Image]:
+        """Renders an episode of the environment."""
         screen = env.render(mode="rgb_array")
         im = Image.fromarray(screen)
 
@@ -317,18 +329,19 @@ class Env:
         return images
 
     def render_gif(self, model: tf.keras.Model) -> None:
+        """Produces a GIF of the final episode."""
         # Save GIF image
         images = self.render_episode(self.env, model, self.max_steps_per_episode)
         image_file = f"out/{self.cfg.to_str()}.gif"
         # loop=0: loop forever, duration=1: play each frame for 1ms
         images[0].save(fp=image_file, save_all=True, append_images=images[1:], loop=0, duration=1)
 
-        info(f"Saved GIF")
+        info("Saved GIF")
 
     def interactive_run(self, model: tf.keras.Model) -> None:
         """
         Runs the model interactively.
-        
+
         ## Parameters
         ```python
         model: tf.keras.Model
@@ -341,7 +354,7 @@ class Env:
 
         all_actions = list(range(self.env.action_space.n))  # 0 for left, 1 for right
         is_running, should_tilt, tilt, released = True, False, False, True
-        tilt_fc, tilt_fc_max, dir = 0, 6, 0
+        tilt_fc, tilt_fc_max, direction = 0, 6, 0
         window = pygame.display.set_mode((WIDTH, HEIGHT))
         font = pygame.font.SysFont("Arial", 15)
         pygame.display.set_caption("CartPole")
@@ -373,7 +386,7 @@ class Env:
                 # mouse events
                 elif event.type == pygame.MOUSEBUTTONDOWN and tilt_fc == 0 and released:
                     should_tilt = True
-                    dir = 0 if pygame.mouse.get_pos()[0] < WIDTH / 2 else 1
+                    direction = 0 if pygame.mouse.get_pos()[0] < WIDTH / 2 else 1
                     released = False
                 elif event.type == pygame.MOUSEBUTTONUP:
                     released = True
@@ -393,7 +406,7 @@ class Env:
             action_probs, _ = model(state)  # get action probabilities
 
             if tilt:
-                action = all_actions[dir]  # get user action
+                action = all_actions[direction]  # get user action
             else:
                 action = np.argmax(np.squeeze(action_probs))  # get action
 
@@ -410,8 +423,10 @@ class Env:
 
             fps_text_surface = font.render(fps_text, True, (0, 0, 0))
             info_text_surface = font.render(info_text, True, (0, 0, 0))
-            lr_r_surface = font.render(lr_r_text, True, (51, 255, 51) if tilt and dir == 1 else (255, 51, 51))
-            lr_l_surface = font.render(lr_l_text, True, (51, 255, 51) if tilt and dir == 0 else (255, 51, 51))
+            lr_r_surface = font.render(lr_r_text, True, (51, 255, 51) if tilt and direction == 1 else
+                                       (255, 51, 51))
+            lr_l_surface = font.render(lr_l_text, True, (51, 255, 51) if tilt and direction == 0 else
+                                       (255, 51, 51))
             window.blit(fps_text_surface, (10, 10))
             window.blit(info_text_surface, (10, 30))
 
@@ -422,6 +437,7 @@ class Env:
             pygame.display.flip()
 
     def run(self) -> None:
+        """Run the user environment."""
         # Set seed for experiment reproducibility
         seed = 42
         self.env.reset(seed=seed)

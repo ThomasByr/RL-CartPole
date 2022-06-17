@@ -1,3 +1,10 @@
+"""
+Actor Critic
+
+Tensorflow (keras) model for the actor critic algorithm.
+"""
+#pylint: disable=[C0103, R0903, E0611]
+
 from typing import Tuple
 
 import tensorflow as tf
@@ -18,5 +25,6 @@ class ActorCritic(tf.keras.Model):
         self.critic = layers.Dense(1)  # critic network
 
     def call(self, inputs: tf.Tensor) -> Tuple[tf.Tensor, tf.Tensor]:
+        """Call the model."""
         x = self.common(inputs)
         return self.actor(x), self.critic(x)
