@@ -35,7 +35,7 @@ class Env:
     # Optimizer for the actor-critic loss
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args: Config | str | int, **kwargs: Config | str | int) -> None:
         """
         Initialize the environment.
 
@@ -46,7 +46,7 @@ class Env:
         ```
         """
 
-        params: dict[str, Config | bool] = {
+        params: dict[str, Config] = {
             "cfg": Config.cv0,
         }
 
@@ -55,21 +55,34 @@ class Env:
 
             if isinstance(value, Config):
                 params["cfg"] = value
-                found_config = True
             elif isinstance(value, str):
-                params["cfg"] = config[value.lower()]
+                try:
+                    params["cfg"] = config[value.lower()]
+                except KeyError:
+                    error(f"Unknown config: {value} ; defaulting to cv0")
+            elif isinstance(value, int):
+                try:
+                    params["cfg"] = config[str(value)]
+                except KeyError:
+                    error(f"Unknown config: {value} ; defaulting to 0")
 
         for key, value in kwargs.items():
 
             if key not in params:
                 continue
 
-            if key == "cfg":
-                if isinstance(value, Config):
-                    params[key] = value
-                elif isinstance(value, str):
+            if isinstance(value, Config):
+                params[key] = value
+            elif isinstance(value, str):
+                try:
                     params[key] = config[value.lower()]
-                continue
+                except KeyError:
+                    error(f"Unknown config: {value} ; defaulting to cv0")
+            elif isinstance(value, int):
+                try:
+                    params[key] = config[str(value)]
+                except KeyError:
+                    error(f"Unknown config: {value} ; defaulting to 0")
 
         # assign params to class attributes
         self._cfg: Config = params["cfg"]
@@ -347,6 +360,7 @@ class Env:
             clock.tick(60)  # limit to 60 FPS
             fps = clock.get_fps()
 
+            # Handle events
             for event in pygame.event.get():
 
                 # exit event

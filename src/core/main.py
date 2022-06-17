@@ -3,7 +3,7 @@ from typing import List
 from .env import Env
 from ..cfg import *
 
-from ..__version__ import __version__
+from ..__version__ import __version__, __title__
 
 import getopt
 
@@ -11,7 +11,7 @@ __all__ = ["main"]
 
 
 def get_help() -> None:  # pragma: no cover
-    info("Usage: python3 main.py [-hv] [--help] [--version=<version>]")
+    info("Usage: python3 main.py [-hvc] [--help] [--version] [--config=<cfg>]")
     info("")
     info("Options:")
     info("  -h, --help      Show this help message and exit.")
@@ -21,7 +21,7 @@ def get_help() -> None:  # pragma: no cover
 
 
 def get_version() -> None:  # pragma: no cover
-    info("Version: %s", __version__)
+    info("%s v%s", __title__, __version__)
 
 
 def main(argv: List[str]) -> None:
