@@ -31,10 +31,10 @@ This script is suppose to run on `python>=3.10.4`.
 
 ## 🧪 Testing
 
-Run and train the simulation with :
+Run and train the simulation with (ignore tf warnings):
 
 ```ps1
-python .\main.py
+python .\main.py -c cv1 2> $null
 ```
 
 If the model is not trained, the program will launch a training session. Otherwise (if there is a model to load in the [models folder](models/)), the weights of the previously trained model will be loaded. Then, either a gif image will be created or interractive mode will be entered depending on commented features.
