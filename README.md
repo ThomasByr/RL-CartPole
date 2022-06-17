@@ -68,4 +68,5 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 **todo** (first implementation version)
 
 - [x] CartPole-v0 -> CartPole-v1 : kept both (v1.1.0)
+- [x] manually tilt the cart : (v1.1.3)
 - [ ] unable to find and utilize gpu

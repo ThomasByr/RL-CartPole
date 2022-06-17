@@ -24,7 +24,7 @@ def get_version() -> None:  # pragma: no cover
     info("Version: %s", __version__)
 
 
-def main(argv: List[str]) -> None:  # pragma: no cover
+def main(argv: List[str]) -> None:
     try:
         opts, args = getopt.getopt(argv[1:], "hvc:", ["help", "version", "config="])
     except getopt.GetoptError:
