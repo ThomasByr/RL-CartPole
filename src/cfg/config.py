@@ -1,5 +1,7 @@
-import gym
 from enum import Enum
+from typing import NoReturn
+
+import gym
 from termcolor import colored
 
 __all__ = ["Config", "info", "debug", "warn", "error", "fatal"]
@@ -47,7 +49,7 @@ def error(msg: str, *args: object) -> None:
     print(colored(msg % args, "red"))
 
 
-def fatal(msg: str, *args: object) -> None:
+def fatal(msg: str, *args: object) -> NoReturn:
     """Print a message to stdout to the fatal level and exit."""
     print(colored(msg % args, "red"))
     exit(1)
