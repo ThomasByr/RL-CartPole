@@ -353,8 +353,9 @@ class Env:
         debug("Running interactive mode...")
 
         all_actions = list(range(self.env.action_space.n))  # 0 for left, 1 for right
-        is_running, should_tilt, tilt, released = True, False, False, True
-        tilt_fc, tilt_fc_max, direction = 0, 6, 0
+        is_running, should_tilt, tilt, released, warned = True, False, False, True, False
+        tilt_fc, tilt_fc_max = 0, 6
+        direction = ({0} | {1}).pop()  # do not make assumptions about the initial direction
         window = pygame.display.set_mode((WIDTH, HEIGHT))
         font = pygame.font.SysFont("Arial", 15)
         pygame.display.set_caption("CartPole")
@@ -410,12 +411,17 @@ class Env:
             else:
                 action = np.argmax(np.squeeze(action_probs))  # get action
 
-            state, _, _, _ = self.env.step(action)  # take action
+            state, rating, done, _ = self.env.step(action)  # take action
             state = tf.constant(state, dtype=tf.float32)  # convert to tensor
 
             screen = self.env.render(mode="rgb_array")  # get screen
             img_surface = pygame.image.frombuffer(screen, (WIDTH, HEIGHT), "RGB")  # convert to pygame surface
             window.blit(img_surface, (0, 0))
+
+            # Consistency warning
+            if done and not warned and rating <= self.eps:
+                warn("Episode failed and should end : consistency can no longer be guaranteed.")
+                warned = True
 
             # Display frame rate and other info
             fps_text = f"fps: {fps:.0f}"
