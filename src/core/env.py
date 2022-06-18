@@ -14,6 +14,7 @@ import gym
 import numpy as np
 import tensorflow as tf
 import tqdm
+import sys
 from PIL import Image
 
 from ..cfg import *
@@ -45,7 +46,7 @@ class Env:
     # Optimizer for the actor-critic loss
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
 
-    def __init__(self, *args: Config | str | int, **kwargs: Config | str | int) -> None:
+    def __init__(self, *args: Config | Device | str | int, **kwargs: Config | Device | str | int) -> None:
         """
         Initialize the environment.
 
@@ -56,8 +57,9 @@ class Env:
         ```
         """
 
-        params: dict[str, Config] = {
+        params: dict[str, Config | Device] = {
             "cfg": Config.cv0,
+            "device": Device.cpu,
         }
 
         # get params from args and kwargs
@@ -65,6 +67,8 @@ class Env:
 
             if isinstance(value, Config):
                 params["cfg"] = value
+            elif isinstance(value, Device):
+                params["device"] = value
             elif isinstance(value, str):
                 try:
                     params["cfg"] = config[value.lower()]
@@ -83,6 +87,8 @@ class Env:
 
             if isinstance(value, Config):
                 params[key] = value
+            elif isinstance(value, Device):
+                params[key] = value
             elif isinstance(value, str):
                 try:
                     params[key] = config[value.lower()]
@@ -96,6 +102,7 @@ class Env:
 
         # assign params to class attributes
         self._cfg: Config = params["cfg"]
+        self._device: Device = params["device"]
 
         self._model_path = f"models/{self.cfg.to_str()}-model.ckpt"
 
@@ -125,6 +132,14 @@ class Env:
     @cfg.setter
     def cfg(self, _: Config) -> None:  # pylint: disable=C0116
         warn("Setting the environment configuration is not supported.")
+
+    @property
+    def device(self) -> Device:  # pylint: disable=C0116
+        return self._device
+
+    @device.setter
+    def device(self, d: Device) -> None:  # pylint: disable=C0116
+        self._device = d
 
     @property
     def model_path(self) -> str:  # pylint: disable=C0116
@@ -281,7 +296,7 @@ class Env:
         episodes_reward: collections.deque = collections.deque(maxlen=self.min_episodes_criterion)
 
         if not loaded:
-            with tqdm.trange(self.max_episodes) as t:
+            with tqdm.trange(self.max_episodes, file=sys.stdout) as t:
                 i: int = -1
                 for i in t:  # for each episode
                     initial_state = tf.constant(self.env.reset(), dtype=tf.float32)  # get initial state
@@ -442,20 +457,39 @@ class Env:
 
             pygame.display.flip()
 
+        pygame.quit()
+
     def run(self) -> None:
         """Run the user environment."""
-        # Set seed for experiment reproducibility
-        seed = 42
-        self.env.reset(seed=seed)
-        tf.random.set_seed(seed)
-        np.random.seed(seed)
+        config = tf.compat.v1.ConfigProto()
+        config.gpu_options.allow_growth = True
+        session = tf.compat.v1.Session(config=config)
+        tf.compat.v1.keras.backend.set_session(session)
 
-        num_actions = self.env.action_space.n  # 2 actions: left or right
+        if (n := Device.n()) == 0:
+            debug("No GPU found.")
+        else:
+            debug(f"Found {n} GPU(s).")
 
-        num_hidden_units = 1 << 7  # 2^7 = 128 hidden units
+        info(f"Using {self.device.get_name()}.")
 
-        model = ActorCritic(num_actions, num_hidden_units)
+        with tf.device(self.device.get_name()):
 
-        self.train(model)
-        # self.render_gif(model)
-        self.interactive_run(model)
+            # Set seed for experiment reproducibility
+            seed = 42
+            self.env.reset(seed=seed)
+            tf.random.set_seed(seed)
+            np.random.seed(seed)
+
+            num_actions = self.env.action_space.n  # 2 actions: left or right
+
+            num_hidden_units = 1 << 7  # 2^7 = 128 hidden units
+
+            model = ActorCritic(num_actions, num_hidden_units)
+            model.compile(optimizer=self.optimizer, loss=self.huber_loss)
+            self.train(model)
+
+            # self.render_gif(model)
+            self.interactive_run(model)
+
+        model.summary()
