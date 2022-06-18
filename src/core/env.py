@@ -461,12 +461,12 @@ class Env:
 
     def run(self) -> None:
         """Run the user environment."""
-        config = tf.compat.v1.ConfigProto()
-        config.gpu_options.allow_growth = True
-        session = tf.compat.v1.Session(config=config)
+        cfg = tf.compat.v1.ConfigProto()
+        cfg.gpu_options.allow_growth = True
+        session = tf.compat.v1.Session(config=cfg)
         tf.compat.v1.keras.backend.set_session(session)
 
-        if (n := Device.n()) == 0:
+        if (n := Device.nd()) == 0:
             debug("No GPU found.")
         else:
             debug(f"Found {n} GPU(s).")
