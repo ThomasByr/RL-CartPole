@@ -7,7 +7,7 @@ import tensorflow as tf
 import numpy as np
 
 from ..core import Env, ActorCritic
-from ..cfg import Config, Device
+from ..cfg import Device
 
 
 @pytest.mark.filterwarnings("ignore:.*:DeprecationWarning")
