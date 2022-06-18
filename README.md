@@ -30,6 +30,25 @@ pip install -r .\requirements.txt
 
 This script is suppose to run on `python>=3.10.4`.
 
+**Additional info** towards Tensorflow compatibility with NVidia GPUs (_not required_)
+
+[This](https://www.tensorflow.org/install/gpu) is the page you are looking for :
+
+- [450.80.02](https://www.nvidia.com/en-us/geforce/geforce-experience/) minimum graphics drivers
+- [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit-archive)
+- [NVIDIA cuDNN](https://developer.nvidia.com/cudnn) (please refer to [this guide](https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html#install-windows))
+
+Then setup `PATH` variables, were `x` is the minor of the CUDA toolkit you have installed (make sure the paths are correct) :
+
+```ps1
+SET PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.x\bin;%PATH%
+SET PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.x\extras\CUPTI\lib64;%PATH%
+SET PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.x\include;%PATH%
+SET PATH=C:\tools\cuda\bin;%PATH%
+```
+
+Also make sure the [compute capability](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capabilities) of the GPU isn't slowing down the hole process due to the (non)atomicity of certain operations. Furthermore, using GPU isn't going to be particularly helpfull with a small number of features to train (with 128 hidden features, because we use dense layers, we have only 1027 features in total to train, which is a very small number). Benefits will increase as the number of features to train goes [past 4000](https://stackoverflow.com/questions/55749899/training-a-simple-model-in-tensorflow-gpu-slower-than-cpu) or so.
+
 ## 🧪 Testing
 
 Run and train the simulation with (ignore tf warnings):
@@ -63,11 +82,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 **bugs** (final correction patch version)
 
 - deprecated packages in imported libs : to be removed in python 3.12 and pillow 10
-- cudart64_110.dll not found
-- tensorflow warnings about deleted checkpoint with unrestored values
+- ~~cudart64_x.dll not found~~ : resolved locally (v1.1.5)
+- tensorflow warnings about deleted checkpoint with unrestored values when not saving final run as gif or not running the "interactive" mode
 
 **todo** (first implementation version)
 
 - [x] CartPole-v0 -> CartPole-v1 : kept both (v1.1.0)
 - [x] manually tilt the cart : (v1.1.3)
-- [ ] unable to find and utilize gpu
+- [x] unable to find and utilize gpu : (v1.1.5)
+- [ ] distributed learning
+- [ ] linux compatible versions
