@@ -12,7 +12,7 @@ import tensorflow as tf
 
 __all__ = ["Device"]
 
-n = len(tf.config.experimental.list_physical_devices("GPU"))
+N = len(tf.config.experimental.list_physical_devices("GPU"))
 
 
 class Device(Enum):
@@ -27,10 +27,10 @@ class Device(Enum):
         return {
             self.cpu: "/cpu:0",
             self.gpu: "/gpu:0",
-            self.auto: "/gpu:0" if n > 0 else "/cpu:0",
+            self.auto: "/gpu:0" if N > 0 else "/cpu:0",
         }[self]
 
     @staticmethod
-    def n() -> int:
+    def nd() -> int:
         """Get the number of available devices."""
-        return n
+        return N
