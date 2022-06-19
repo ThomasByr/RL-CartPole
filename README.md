@@ -23,13 +23,13 @@ In the [CartPole environment](https://www.gymlibrary.ml/environments/classic_con
 
 ## ✏️ Setup
 
-Please make sure you have the necessary library up and ready on your environment :
+This file does not include `bash` scripts and focuses only on Windows `PowerShell` scripts. To begin, please make sure you have the necessary library up and ready on your environment :
 
 ```ps1
 pip install -r .\requirements.txt
 ```
 
-This script is supposed to run on `python>=3.10.4`.
+This hole program is supposed to run on `python>=3.10.4`.
 
 ## 💁 Additional infos
 
@@ -73,6 +73,8 @@ Please note that the training could take up to 5 minutes depending on your hardw
 ## ⚖️ License
 
 This project is licensed under the GPL-3.0 new or revised license. Please read the [LICENSE](LICENSE) file.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
 - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
 - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
