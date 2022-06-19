@@ -50,7 +50,7 @@ SET PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.x\include;%PATH%
 SET PATH=C:\tools\cuda\bin;%PATH%
 ```
 
-Also make sure the [compute capability](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capabilities) of the GPU isn't slowing down the hole process due to the (non)atomicity of certain operations. Furthermore, using GPU isn't going to be particularly helpfull with a small number of features to train (we have only 1027 features in total to train, which is a very small number). Benefits will increase as the number of features to train goes [past 4000](https://stackoverflow.com/questions/55749899/training-a-simple-model-in-tensorflow-gpu-slower-than-cpu) or so.
+Also make sure the [compute capability](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capabilities) of the GPU isn't slowing down the hole process due to the (non)atomicity of some operations. Furthermore, using GPU isn't going to be particularly helpfull with a small number of features to train (we have only 1027 features in total to train, which is a very small number). Benefits will increase as the number of features to train goes [past 4000](https://stackoverflow.com/questions/55749899/training-a-simple-model-in-tensorflow-gpu-slower-than-cpu) or so.
 
 ## 🧪 Testing
 
@@ -62,7 +62,7 @@ python .\main.py 2> $null
 
 If the model is not trained, the program will launch a training session. Otherwise (if there is a model to load in the [models folder](models/)), the weights of the previously trained model will be loaded. Then, either a gif image will be created or interractive mode will be entered depending on commented features.
 
-To force the training, please type the following and the re-run the script :
+To force the training, please type the following command and run the script again :
 
 ```ps1
 rm -r -Force models/*
