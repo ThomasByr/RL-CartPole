@@ -1,4 +1,4 @@
-# Playing CartPole with the Actor-Critic Method
+# <img src="assets/icon.png" alt="icon" width="3%"/> Playing CartPole with the Actor-Critic Method
 
 [![Windows](https://svgshare.com/i/ZhY.svg)](https://svgshare.com/i/ZhY.svg)
 [![GitHub license](https://img.shields.io/github/license/ThomasByr/RL-CartPole)](https://github.com/ThomasByr/RL-CartPole/blob/master/LICENSE)
