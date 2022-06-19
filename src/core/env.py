@@ -467,11 +467,11 @@ class Env:
         tf.compat.v1.keras.backend.set_session(session)
 
         if (n := Device.nd()) == 0:
-            debug("No GPU found.")
+            debug("Tensorflow found no physical GPUs")
             if "gpu" in self.device.get_name():
-                fatal("Can't run on GPU - please force CPU runmode or let it on auto-detect.")
+                fatal("Can't run on GPU - please force CPU runmode.")
         else:
-            debug(f"Found {n} GPU(s).")
+            debug(f"Tensorflow found {n} physical GPU(s).")
 
         info(f"Using {self.device.get_name()}.")
 
