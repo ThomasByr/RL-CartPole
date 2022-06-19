@@ -16,9 +16,10 @@
 In the [CartPole environment](https://www.gymlibrary.ml/environments/classic_control/cart_pole/), a pole is attached to a cart moving along a frictionless track. The pole starts upright and the goal of the agent is to prevent it from falling over by applying a force of -1 or +1 to the cart. A reward of +1 is given for every time step the pole remains upright. An episode ends when (1) the pole is more than 15 degrees from vertical or (2) the cart moves more than 2.4 units from the center.
 
 1. [✏️ Setup](#️-setup)
-2. [🧪 Testing](#-testing)
-3. [⚖️ License](#️-license)
-4. [🐛 Bugs & TODO](#-bugs--todo)
+2. [💁 Additional infos](#-additional-infos)
+3. [🧪 Testing](#-testing)
+4. [⚖️ License](#️-license)
+5. [🐛 Bugs & TODO](#-bugs--todo)
 
 ## ✏️ Setup
 
@@ -28,19 +29,40 @@ Please make sure you have the necessary library up and ready on your environment
 pip install -r .\requirements.txt
 ```
 
-This script is suppose to run on `python>=3.10.4`.
+This script is supposed to run on `python>=3.10.4`.
+
+## 💁 Additional infos
+
+> Tensorflow `>=2` is compatible with NVidia GPUs and requires _almost_ no change in the code base (_not required_)
+
+[This](https://www.tensorflow.org/install/gpu) is the page you are looking for. TL;DR :
+
+- [450.80.02](https://www.nvidia.com/en-us/geforce/geforce-experience/) minimum graphics drivers
+- [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit-archive)
+- [NVIDIA cuDNN](https://developer.nvidia.com/cudnn) (please refer to [this guide](https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html#install-windows))
+
+Then setup `PATH` variables, were `x` is the minor of the CUDA toolkit you have installed (make sure the paths are correct) :
+
+```ps1
+SET PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.x\bin;%PATH%
+SET PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.x\extras\CUPTI\lib64;%PATH%
+SET PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.x\include;%PATH%
+SET PATH=C:\tools\cuda\bin;%PATH%
+```
+
+Also make sure the [compute capability](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capabilities) of the GPU isn't slowing down the hole process due to the (non)atomicity of some operations. Furthermore, using GPU isn't going to be particularly helpfull with a small number of features to train (we have only 1027 features in total to train, which is a very small number). Benefits will increase as the number of features to train goes [past 4000](https://stackoverflow.com/questions/55749899/training-a-simple-model-in-tensorflow-gpu-slower-than-cpu) or so.
 
 ## 🧪 Testing
 
 Run and train the simulation with (ignore tf warnings):
 
 ```ps1
-python .\main.py -c 1 2> $null
+python .\main.py 2> $null
 ```
 
 If the model is not trained, the program will launch a training session. Otherwise (if there is a model to load in the [models folder](models/)), the weights of the previously trained model will be loaded. Then, either a gif image will be created or interractive mode will be entered depending on commented features.
 
-To force the training, please type the following and the re-run the script :
+To force the training, please type the following command and run the script again :
 
 ```ps1
 rm -r -Force models/*
@@ -63,11 +85,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 **bugs** (final correction patch version)
 
 - deprecated packages in imported libs : to be removed in python 3.12 and pillow 10
-- cudart64_110.dll not found
-- tensorflow warnings about deleted checkpoint with unrestored values
+- ~~cudart64_x.dll not found~~ : resolved locally (v1.1.5)
+- tensorflow warnings about deleted checkpoint with unrestored values when not saving final run as gif or not running the "interactive" mode
 
 **todo** (first implementation version)
 
 - [x] CartPole-v0 -> CartPole-v1 : kept both (v1.1.0)
 - [x] manually tilt the cart : (v1.1.3)
-- [ ] unable to find and utilize gpu
+- [x] unable to find and utilize gpu : (v1.1.5)
+- [ ] distributed learning
+- [ ] linux compatible versions
