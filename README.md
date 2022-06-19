@@ -29,11 +29,11 @@ Please make sure you have the necessary library up and ready on your environment
 pip install -r .\requirements.txt
 ```
 
-This script is suppose to run on `python>=3.10.4`.
+This script is supposed to run on `python>=3.10.4`.
 
 ## 💁 Additional infos
 
-Tensorflow compatibility with NVidia GPUs (_not required_)
+> Tensorflow `>=2` is compatible with NVidia GPUs and requires _almost_ no change in the code base (_not required_)
 
 [This](https://www.tensorflow.org/install/gpu) is the page you are looking for. TL;DR :
 
