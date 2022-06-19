@@ -131,15 +131,15 @@ class Env:
 
     @cfg.setter
     def cfg(self, _: Config) -> None:  # pylint: disable=C0116
-        warn("Setting the environment configuration is not supported.")
+        warn("Setting the environment configuration on runtime is not supported.")
 
     @property
     def device(self) -> Device:  # pylint: disable=C0116
         return self._device
 
     @device.setter
-    def device(self, d: Device) -> None:  # pylint: disable=C0116
-        self._device = d
+    def device(self, _: Device) -> None:  # pylint: disable=C0116
+        warn("Setting the environment device on runtime is not supported.")
 
     @property
     def model_path(self) -> str:  # pylint: disable=C0116
@@ -147,7 +147,7 @@ class Env:
 
     @model_path.setter
     def model_path(self, _: str) -> None:  # pylint: disable=C0116
-        warn("Setting the model path is not supported.")
+        warn("Setting the model path manually is not supported.")
 
     # Wrap OpenAI Gym"s `env.step` call as an operation in a TensorFlow function.
     # This would allow it to be included in a callable TensorFlow graph.
@@ -468,6 +468,8 @@ class Env:
 
         if (n := Device.nd()) == 0:
             debug("No GPU found.")
+            if "gpu" in self.device.get_name():
+                fatal("Can't run on GPU - please force CPU runmode or let it on auto-detect.")
         else:
             debug(f"Found {n} GPU(s).")
 
