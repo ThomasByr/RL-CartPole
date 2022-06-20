@@ -26,7 +26,8 @@ def test_v0():
         num_hidden_units = 1 << 7
 
         model = ActorCritic(num_actions, num_hidden_units)
-        environment.train(model)
+
+    environment.train(model)
 
 
 @pytest.mark.filterwarnings("ignore:.*:DeprecationWarning")
@@ -45,4 +46,5 @@ def test_v1():
         num_hidden_units = 1 << 7
 
         model = ActorCritic(num_actions, num_hidden_units)
-        environment.train(model)
+
+    environment.train(model)
