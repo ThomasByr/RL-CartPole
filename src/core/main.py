@@ -35,10 +35,19 @@ def get_version() -> None:  # pragma: no cover
 
 
 def main(argv: List[str]) -> None:
-    """Main entry point."""
+    """
+    Main entry point.
+
+    ## Parameters
+    ```py
+    argv: List[str]
+        Command line arguments
+        (tries to strip the program name from the list).
+    ```
+    """
     try:
         opts, args = getopt.getopt(
-            list(map(str.lower, argv[1:])),
+            list(map(str.lower, argv[::] if argv[0] != "main.py" else argv[1:])),
             "hvc:",
             [
                 "help",
