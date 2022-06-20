@@ -17,7 +17,7 @@ __all__ = ["main"]
 
 def get_help() -> None:  # pragma: no cover
     """Display the help message."""
-    info("Usage: python .\main.py [-hvc] [--help] [--version] [--cfg <cfg>] [--cpu] [--gpu] [--auto]")
+    info("Usage: python main.py [-hvc] [--help] [--version] [--cfg <cfg>] [--cpu] [--gpu] [--auto]")
     info("")
     info("Options:")
     info("  -h, --help      Show this help message and exit.")
