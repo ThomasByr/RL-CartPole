@@ -46,63 +46,40 @@ class Env:
     # Optimizer for the actor-critic loss
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
 
-    def __init__(self, *args: Config | Device | str | int, **kwargs: Config | Device | str | int) -> None:
+    def __init__(self, cfg: Config | int | str = Config.cv0, device: Device = Device.cpu) -> None:
         """
         Initialize the environment.
 
         ## Parameters
         ```py
-        cfg: Config
-            Configuration object.
+        cfg: Config | int | str (optional)
+            Configuration of the environment.
+            Default: `Config.cv0`
+        device: Device (optional)
+            Device to use during training, only applies to the `train` method.
+            Default: `Device.cpu`
         ```
         """
 
-        params: dict[str, Config | Device] = {
-            "cfg": Config.cv0,
-            "device": Device.cpu,
-        }
-
-        # get params from args and kwargs
-        for value in args:
-
-            if isinstance(value, Config):
-                params["cfg"] = value
-            elif isinstance(value, Device):
-                params["device"] = value
-            elif isinstance(value, str):
-                try:
-                    params["cfg"] = config[value.lower()]
-                except KeyError:
-                    error(f"Unknown config: {value} ; defaulting to cv0")
-            elif isinstance(value, int):
-                try:
-                    params["cfg"] = config[str(value)]
-                except KeyError:
-                    error(f"Unknown config: {value} ; defaulting to 0")
-
-        for key, value in kwargs.items():
-
-            if key not in params:
-                continue
-
-            if isinstance(value, Config):
-                params[key] = value
-            elif isinstance(value, Device):
-                params[key] = value
-            elif isinstance(value, str):
-                try:
-                    params[key] = config[value.lower()]
-                except KeyError:
-                    error(f"Unknown config: {value} ; defaulting to cv0")
-            elif isinstance(value, int):
-                try:
-                    params[key] = config[str(value)]
-                except KeyError:
-                    error(f"Unknown config: {value} ; defaulting to 0")
-
         # assign params to class attributes
-        self._cfg: Config = params["cfg"]
-        self._device: Device = params["device"]
+        self._cfg: Config
+        self._device: Device
+
+        if isinstance(cfg, int):
+            try:
+                cfg = config[str(cfg)]
+            except KeyError:
+                error(f"Invalid config: {cfg} - defaulting to 0")
+                cfg = Config.cv0
+        elif isinstance(cfg, str):
+            try:
+                cfg = config[cfg]
+            except KeyError:
+                error(f"Invalid config: {cfg} - defaulting to cv0")
+                cfg = Config.cv0
+
+        self._cfg = cfg
+        self._device = device
 
         self._model_path = f"models/{self.cfg.to_str()}-model.ckpt"
 
@@ -296,7 +273,7 @@ class Env:
         episodes_reward: collections.deque = collections.deque(maxlen=self.min_episodes_criterion)
 
         if not loaded:
-            with tqdm.trange(self.max_episodes, file=sys.stdout) as t:
+            with tf.device(self.device.get_name()) and tqdm.trange(self.max_episodes, file=sys.stdout) as t:
                 i: int = -1
                 for i in t:  # for each episode
                     initial_state = tf.constant(self.env.reset(), dtype=tf.float32)  # get initial state
@@ -489,9 +466,10 @@ class Env:
 
             model = ActorCritic(num_actions, num_hidden_units)
             model.compile(optimizer=self.optimizer, loss=self.huber_loss)
-            self.train(model)
 
-            # self.render_gif(model)
-            self.interactive_run(model)
+        self.train(model)
+
+        # self.render_gif(model)
+        self.interactive_run(model)
 
         model.summary()
