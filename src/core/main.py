@@ -47,7 +47,7 @@ def main(argv: List[str]) -> None:
     """
     try:
         opts, args = getopt.getopt(
-            list(map(str.lower, argv[::] if argv[0] != "main.py" else argv[1:])),
+            list(map(str.lower, argv[::] if "main.py" not in argv[0] else argv[1:])),
             "hvc:",
             [
                 "help",
