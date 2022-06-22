@@ -1,7 +1,7 @@
 """
 RL CartPole using Actor-Critic
 """
-#pylint: disable=[C0114, C0411, C0103, W0614]
+# pylint: disable=[C0114, C0411, C0103, W0614]
 
 from .core import *
 
