@@ -1,7 +1,7 @@
 """
 Main entry point.
 """
-#pylint: disable=[C0410, C0410, C0411, W0401, W0614]
+# pylint: disable=[C0410, C0410, C0411, W0401, W0614]
 
 from typing import List
 

@@ -3,7 +3,7 @@ Actor Critic
 
 Tensorflow (keras) model for the actor critic algorithm.
 """
-#pylint: disable=[C0103, R0903, E0611]
+# pylint: disable=[C0103, R0903, E0611]
 
 from typing import Tuple
 

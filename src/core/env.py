@@ -3,7 +3,7 @@ Environment
 
 User based environment to perform the CartPole task.
 """
-#pylint: disable=[C0103, C0114, C0301, C0411, W0401, W0614, W0703, R0902, R0912, R0913, R0914, E1101]
+# pylint: disable=[C0103, C0114, C0301, C0411, W0401, W0614, W0703, R0902, R0912, R0913, R0914, E1101]
 
 import collections
 import statistics
