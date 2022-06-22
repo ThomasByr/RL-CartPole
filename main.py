@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#pylint: disable=[C0410, C0114, C0411, W0614]
+# pylint: disable=[C0410, C0114, C0411, W0614]
 
 # RL CartPole using Actor-Critic
 #
