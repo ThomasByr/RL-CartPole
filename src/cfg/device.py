@@ -4,7 +4,7 @@ Device
 Device enum to force use with a specific device.
 """
 
-#pylint: disable=[C0103, C0410, C0411]
+# pylint: disable=[C0103, C0410, C0411]
 
 from enum import Enum
 
