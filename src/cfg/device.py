@@ -16,21 +16,21 @@ N = len(tf.config.experimental.list_physical_devices("GPU"))
 
 
 class Device(Enum):
-    """Enum for the different devices."""
+  """Enum for the different devices."""
 
-    cpu = "cpu"  # CPU
-    gpu = "gpu"  # GPU
-    auto = "auto"  # Auto
+  cpu = "cpu"  # CPU
+  gpu = "gpu"  # GPU
+  auto = "auto"  # Auto
 
-    def get_name(self) -> str:
-        """Get the name of the device."""
-        return {
-            self.cpu: "/cpu:0",
-            self.gpu: "/gpu:0",
-            self.auto: "/gpu:0" if N > 0 else "/cpu:0",
-        }[self]
+  def get_name(self) -> str:
+    """Get the name of the device."""
+    return {
+        self.cpu: "/cpu:0",
+        self.gpu: "/gpu:0",
+        self.auto: "/gpu:0" if N > 0 else "/cpu:0",
+    }[self]
 
-    @staticmethod
-    def nd() -> int:
-        """Get the number of available devices."""
-        return N
+  @staticmethod
+  def nd() -> int:
+    """Get the number of available devices."""
+    return N
