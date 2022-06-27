@@ -10,7 +10,7 @@ from enum import Enum
 from typing import NoReturn
 from termcolor import colored
 
-import gym, sys
+import re, gym, sys
 
 __all__ = ["Config", "info", "debug", "warn", "error", "fatal"]
 
