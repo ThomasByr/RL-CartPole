@@ -6,7 +6,6 @@ Log level functions.
 
 # pylint: disable=[C0103, C0410, C0411]
 
-from enum import Enum
 from typing import NoReturn
 from termcolor import colored
 
